@@ -139,7 +139,7 @@
   :commands command-log-mode)
 
 (use-package doom-themes
-  :init (load-theme 'doom-gruvbox t))
+  :init (load-theme 'doom-material-dark t))
 
 (use-package all-the-icons)
 

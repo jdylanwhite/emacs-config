@@ -235,12 +235,14 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 [[https://github.com/hlissner/emacs-doom-themes][doom-themes]] is a great set of themes with a lot of variety and support for many different Emacs modes.  Taking a look at the [[https://github.com/hlissner/emacs-doom-themes/tree/screenshots][screenshots]] might help you decide which one you like best.  You can also run =M-x counsel-load-theme= to choose between them easily.
 
-#+begin_src emacs-lisp
+#+Begin_src emacs-lisp
 
 (use-package doom-themes
-  :init (load-theme 'doom-gruvbox t))
+  :init (load-theme 'doom-material-dark t))
 
 #+end_src
+
+Note: As a WSL user of Emacs and Windows Terminal user, I also like to match my terminal theme to my Emacs theme. [[https://windowsterminalthemes.dev/]] is a good resource for getting themes for Windows Terminal.
 
 ** Better Modeline
 
