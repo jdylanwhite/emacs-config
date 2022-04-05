@@ -565,7 +565,7 @@ This section contains the basic configuration for =org-mode= plus the configurat
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
-    (org-bullets-bullet-list '("*" "○" "●" "○" "●" "○" "●")))
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 #+end_src
 
@@ -1012,6 +1012,18 @@ You can use the pyvenv package to use =virtualenv= environments in Emacs.  The =
     :config
     (pyvenv-mode 1))
 
+#+end_src
+
+Let's also get =conda= integrated into Emacs.
+
+#+begin_src emacs-lisp
+
+  (use-package conda
+    :ensure t
+    :init
+    (setq conda-anaconda-home (expand-file-name "~/miniconda3"))
+    (setq conda-env-home-directory (expand-file-name "~/miniconda3")))
+     
 #+end_src
 
 ** R 
