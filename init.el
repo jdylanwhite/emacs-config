@@ -72,6 +72,14 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
+;; Use pixels for frame size
+(setq frame-resize-pixelwise t)
+;; (set-frame-parameter nil 'fullscreen 'fullboth)
+
+;; Start up in full-screen
+;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 term-mode-hook

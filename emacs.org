@@ -1,5 +1,5 @@
 #+title: Emacs From Scratch Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes :results silent
 
 * Welcome!
 
@@ -139,6 +139,14 @@ This section configures basic UI settings that remove unneeded elements to make 
   (column-number-mode)
   (global-display-line-numbers-mode t)
 
+  ;; Use pixels for frame size
+  (setq frame-resize-pixelwise t)
+  ;; (set-frame-parameter nil 'fullscreen 'fullboth)
+
+  ;; Start up in full-screen
+  ;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+  ;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
   ;; Disable line numbers for some modes
   (dolist (mode '(org-mode-hook
                   term-mode-hook
@@ -148,6 +156,9 @@ This section configures basic UI settings that remove unneeded elements to make 
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 #+end_src
+
+** TODO Set up full screen for multiple monitors
+** TODO Set up toggles for full screen
 
 ** Font Configuration
 
@@ -217,17 +228,22 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 ** Color Theme
 
-[[https://github.com/hlissner/emacs-doom-themes][doom-themes]] is a great set of themes with a lot of variety and support for many different Emacs modes.  Taking a look at the [[https://github.com/hlissner/emacs-doom-themes/tree/screenshots][screenshots]] might help you decide which one you like best.  You can also run =M-x counsel-load-theme= to choose between them easily.
+[[https://github.com/hlissner/emacs-doom-themes][doom-themes]] is a great set of themes with a lot of variety and support for many different Emacs modes.  Taking a look at the [[https://github.com/hlissner/emacs-doom-themes/tree/screenshots][screenshots]] might help you decide which one you like best.  You can also run =M-x counsel-load-theme= to choose between them easily. I bounce around themes a lot, but some of my favorites have been
+
+- tomorrow-night
+- gruvbox
+- dracula
+- moonlight
+- horizon
+- old-hope 
 
 #+Begin_src emacs-lisp
 
-    (use-package doom-themes
-      :init (load-theme 'doom-tomorrow-night t)
-      (doom-themes-visual-bell-config))
+  (use-package doom-themes
+    :init (load-theme 'doom-tomorrow-night t)
+    (doom-themes-visual-bell-config))
   
 #+end_src
-
-#+RESULTS:
 
 Note: As a WSL user of Emacs and Windows Terminal user, I also like to match my terminal theme to my Emacs theme. [[https://windowsterminalthemes.dev/]] is a good resource for getting themes for Windows Terminal.
 
