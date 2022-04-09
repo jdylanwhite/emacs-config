@@ -4,23 +4,20 @@
 ;;       in Emacs and init.el will be generated automatically!
 
 ;; You will most likely need to adjust this font size for your system!
-(defvar efs/default-font-size 100)
-(defvar efs/default-variable-font-size 120)
-
-;; Make frame transparency overridable
-(defvar efs/frame-transparency '(90 . 90))
+(defvar my/default-font-size 100)
+(defvar my/default-variable-font-size 120)
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
 
-(defun efs/display-startup-time ()
+(defun my/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
            (format "%.2f seconds"
                    (float-time
                      (time-subtract after-init-time before-init-time)))
            gcs-done))
 
-(add-hook 'emacs-startup-hook #'efs/display-startup-time)
+(add-hook 'emacs-startup-hook #'my/display-startup-time)
 
 ;; Initialize package sources
 (require 'package)
@@ -32,7 +29,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-  ;; Initialize use-package on non-Linux platforms
+;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
@@ -50,7 +47,7 @@
 
 ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
 ;; reliably, set `user-emacs-directory` before loading no-littering!
-;(setq user-emacs-directory "~/.cache/emacs")
+;; (setq user-emacs-directory "~/.cache/emacs")
 
 (use-package no-littering)
 
@@ -66,19 +63,14 @@
 (tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
 
-(menu-bar-mode -1)            ; Disable the menu bar
+(menu-bar-mode -1)          ; Disable the menu bar
 
 ;; Set up the visible bell
 (setq visible-bell t)
 
+;; Line and column numbers
 (column-number-mode)
 (global-display-line-numbers-mode t)
-
-;; Set frame transparency
-;; (set-frame-parameter (selected-frame) 'alpha efs/frame-transparency)
-;; (add-to-list 'default-frame-alist `(alpha . ,efs/frame-transparency))
-;; (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
-;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
@@ -88,13 +80,14 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(set-face-attribute 'default nil :font "Fira Code Retina" :height efs/default-font-size)
+;; Set the default face
+(set-face-attribute 'default nil :font "Fira Code Retina" :height my/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height efs/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height my/default-font-size)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height efs/default-variable-font-size :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height my/default-variable-font-size :weight 'regular)
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -102,12 +95,12 @@
 (use-package general
   :after evil
   :config
-  (general-create-definer efs/leader-keys
+  (general-create-definer my/leader-keys
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
 
-  (efs/leader-keys
+  (my/leader-keys
     "t"  '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")
     "fde" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/Emacs.org")))))
@@ -134,9 +127,6 @@
   :after evil
   :config
   (evil-collection-init))
-
-(use-package command-log-mode
-  :commands command-log-mode)
 
 (use-package doom-themes
   :init (load-theme 'doom-tomorrow-night t))
@@ -214,10 +204,10 @@
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
 
-(efs/leader-keys
+(my/leader-keys
   "ts" '(hydra-text-scale/body :which-key "scale text"))
 
-(defun efs/org-font-setup ()
+(defun my/org-font-setup ()
   ;; Replace list hyphen with dot
   (font-lock-add-keywords 'org-mode
                           '(("^ *\\([-]\\) "
@@ -235,11 +225,11 @@
     (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil :inherit '(shadow fixed-pitch))
   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
@@ -247,7 +237,7 @@
   (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
   (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
 
-(defun efs/org-mode-setup ()
+(defun my/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (visual-line-mode 1))
@@ -255,7 +245,7 @@
 (use-package org
   :pin elpa
   :commands (org-capture org-agenda)
-  :hook (org-mode . efs/org-mode-setup)
+  :hook (org-mode . my/org-mode-setup)
   :config
   (setq org-ellipsis " ▾")
 
@@ -377,20 +367,20 @@
   (define-key global-map (kbd "C-c j")
     (lambda () (interactive) (org-capture nil "jj")))
 
-  (efs/org-font-setup))
+  (my/org-font-setup))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
-(defun efs/org-mode-visual-fill ()
+(defun my/org-mode-visual-fill ()
   (setq visual-fill-column-width 120
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
+  :hook (org-mode . my/org-mode-visual-fill))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
@@ -411,14 +401,14 @@
   (add-to-list 'org-structure-template-alist '("r" . "src R")))
 
 ;; Automatically tangle our Emacs.org config file when we save it
-(defun efs/org-babel-tangle-config ()
+(defun my/org-babel-tangle-config ()
   (when (string-equal (file-name-directory (buffer-file-name))
                       (expand-file-name user-emacs-directory))
     ;; Dynamic scoping to the rescue
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))
 
-(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'efs/org-babel-tangle-config)))
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'my/org-babel-tangle-config)))
 
 (with-eval-after-load 'org
    (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
@@ -605,13 +595,13 @@ capture was not aborted."
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start nil))
 
-(defun efs/lsp-mode-setup ()
+(defun my/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
+  :hook (lsp-mode . my/lsp-mode-setup)
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
@@ -748,7 +738,7 @@ capture was not aborted."
   (setq explicit-shell-file-name "powershell.exe")
   (setq explicit-powershell.exe-args '()))
 
-(defun efs/configure-eshell ()
+(defun my/configure-eshell ()
   ;; Save command history when commands are entered
   (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
 
@@ -769,7 +759,7 @@ capture was not aborted."
   :after eshell)
 
 (use-package eshell
-  :hook (eshell-first-time-mode . efs/configure-eshell)
+  :hook (eshell-first-time-mode . my/configure-eshell)
   :config
 
   (with-eval-after-load 'esh-opt
@@ -810,16 +800,3 @@ capture was not aborted."
 
 ;; Make gc pauses faster by decreasing the threshold.
 (setq gc-cons-threshold (* 2 1000 1000))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(conda zenburn-theme which-key vterm visual-fill-column vdiff-magit use-package unobtrusive-magit-theme typescript-mode rainbow-delimiters python-mode org-roam-ui org-bullets nord-theme no-littering lsp-ui lsp-ivy ivy-rich ivy-prescient helpful general forge flycheck evil-nerd-commenter evil-collection eterm-256color ess eshell-git-prompt elpy eldoc doom-themes doom-modeline dired-single dired-open dired-hide-dotfiles dash-functional dap-mode counsel-projectile company-box command-log-mode auto-package-update all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
