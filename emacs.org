@@ -221,10 +221,13 @@ This configuration uses [[https://evil.readthedocs.io/en/latest/index.html][evil
 
 #+Begin_src emacs-lisp
 
-(use-package doom-themes
-  :init (load-theme 'doom-tomorrow-night t))
-
+    (use-package doom-themes
+      :init (load-theme 'doom-tomorrow-night t)
+      (doom-themes-visual-bell-config))
+  
 #+end_src
+
+#+RESULTS:
 
 Note: As a WSL user of Emacs and Windows Terminal user, I also like to match my terminal theme to my Emacs theme. [[https://windowsterminalthemes.dev/]] is a good resource for getting themes for Windows Terminal.
 

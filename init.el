@@ -129,7 +129,8 @@
   (evil-collection-init))
 
 (use-package doom-themes
-  :init (load-theme 'doom-tomorrow-night t))
+  :init (load-theme 'doom-tomorrow-night t)
+  (doom-themes-visual-bell-config))
 
 (use-package all-the-icons)
 
